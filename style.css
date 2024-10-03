@@ -1,0 +1,330 @@
+/* 기본 스타일 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f4f4f4;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  font-size: 30px;
+  margin-top: 40px;
+}
+
+h2 {
+  color: #333;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* 워터마크 스타일 */
+.watermark {
+  position: absolute;
+  top: 10px;
+  /* 상단에서 10px 내려오도록 설정 */
+  right: 20px;
+  /* 오른쪽에서 20px 안쪽에 위치 */
+  font-size: 16px;
+  /* 글씨 크기 */
+  color: rgba(0, 0, 0, 0.5);
+  /* 연한 검정색, 불투명도 조정 */
+  font-weight: bold;
+  /* 볼드체 적용 */
+  z-index: 999;
+  /* 다른 요소 위에 표시되도록 설정 */
+  margin-top: 10px;
+}
+
+/* 분반 및 이름 스타일 */
+.info-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 20px;
+  flex-wrap: wrap;
+}
+
+/* 검색 컨테이너 기본 스타일 */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 20px;
+  flex-wrap: wrap;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  min-width: 80px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #cc0000;
+}
+
+/* 반응형 레이아웃 */
+@media (max-width: 400px) {
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input[type="text"],
+  select,
+  button {
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+}
+
+/* 비디오 리스트 스타일 */
+.video-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.video-item {
+  margin: 15px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.video-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.video-item h3 {
+  font-size: 15px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.rating-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.rating-buttons button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.rating-buttons button:hover {
+  background-color: #0056b3;
+}
+
+#nextButton {
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  /* 여기서 하나만 남겨둡니다 */
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+}
+
+
+#bestVideosContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+}
+
+.best-video-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* 제목과 버튼을 양 끝으로 배치 */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.best-video-thumbnail {
+  width: 120px;
+  height: auto;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.video-info {
+  flex-grow: 1;
+  /* 제목 부분이 가능한 넓은 공간을 차지하도록 */
+  width: 250px;
+  margin-right: 20px;
+  /* 제목과 버튼 사이의 간격을 추가 */
+  overflow: hidden;
+  /* 제목이 버튼을 넘지 않도록 숨김 */
+  display: -webkit-box;
+  /* 웹킷 기반 브라우저에서 박스 형태로 텍스트 처리 */
+  -webkit-line-clamp: 2;
+  /* 두 줄까지만 표시 */
+  -webkit-box-orient: vertical;
+  /* 수직 정렬을 위한 속성 */
+  max-height: 3em;
+  /* 대략 두 줄 정도의 높이 */
+  line-height: 1.5em;
+  /* 줄 간격 설정 */
+  text-overflow: ellipsis;
+  /* 넘치는 텍스트는 '...'으로 표시 */
+  overflow-wrap: break-word;
+  /* 긴 단어가 있을 경우 줄 바꿈 처리 */
+}
+
+.best-video-title {
+  margin: 0;
+}
+
+.script-practice-button {
+  width: 90px;
+  /* 버튼의 고정된 너비 설정 */
+  height: 40px;
+  /* 버튼의 고정된 높이 설정 */
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  /* 텍스트가 줄바꿈되지 않도록 설정 */
+  text-align: center;
+  /* 텍스트를 가운데 정렬 */
+  display: inline-block;
+  /* 버튼을 인라인 블록으로 유지 */
+  margin-right: 15px;
+}
+
+
+.script-practice-button:hover {
+  background-color: #0056b3;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+/* 스크립트 작성 페이지 */
+.video-container {
+  text-align: center;
+  margin: 20px 10px;
+}
+
+textarea {
+  display: block;
+  margin: 20px auto;
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Footer styling */
+footer {
+  background-color: #E1E1E2;
+  color: #333;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+footer div {
+  width: 23%;
+  margin-left: 40px;
+  margin-right: 20px;
+}
+
+footer div h3 {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+footer div p {
+  margin: 5px 0;
+  font-size: 13px;
+}
+
+footer div a {
+  color: #333;
+  text-decoration: none;
+}
+
+footer div a:hover {
+  text-decoration: underline;
+}

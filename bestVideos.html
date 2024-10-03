@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Best Videos</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <!-- 외부 스타일 시트 연결 -->
+    </head>
+
+    <body>
+        <div class="watermark">온라인 마케터 양성교육용</div>
+        <h1>축하해요!👏 Best 영상들의 대본을 적어보세요.</h1>
+        <h2>정답을 맞춘 Best 썸네일</h2>
+        <main>
+            <div id="bestVideosContainer"></div>
+            <div class="button-container">
+                <!-- 버튼을 가운데로 정렬 -->
+                <button id="downloadBtn">대본 CSV로 저장하기</button>
+                <!-- CSV로 저장하기 버튼 -->
+            </div>
+        </main>
+
+        <!-- Footer section -->
+        <div id="footer"></div>
+        <!-- Footer가 동적으로 로드될 부분 -->
+
+        <script>
+            // Footer를 동적으로 로드하는 함수
+            function loadFooter() {
+                fetch("footer.html")
+                    .then((response) => response.text())
+                    .then((data) => {
+                        document.getElementById("footer").innerHTML = data;
+                    })
+                    .catch((error) =>
+                        console.error("Error loading footer:", error),
+                    );
+            }
+
+            // 페이지가 로드될 때 Footer를 불러옴
+            window.onload = function () {
+                loadFooter();
+            };
+            const bestVideos =
+                JSON.parse(localStorage.getItem("bestVideos")) || [];
+
+            // Best 비디오 출력
+            const bestVideosContainer = document.getElementById(
+                "bestVideosContainer",
+            );
+            bestVideosContainer.innerHTML = bestVideos
+                .map(
+                    (video) => `
+            <div class="best-video-item">
+                <img src="${video.videoThumbnail}" alt="${video.videoTitle}" class="best-video-thumbnail">
+                <div class="video-info">
+                    <h3 class="best-video-title">${video.videoTitle}</h3>
+                </div>
+                <button class="script-practice-button" onclick="startScriptPractice('${video.videoId}', '${video.videoTitle}')">대본연습</button>
+            </div>
+        `,
+                )
+                .join("");
+
+            // 대본 연습 페이지로 이동하는 함수
+            function startScriptPractice(videoId, videoTitle) {
+                window.location.href = `videoScript.html?videoId=${videoId}&title=${encodeURIComponent(videoTitle)}`;
+            }
+
+            // CSV 다운로드 버튼 이벤트 핸들러
+            document
+                .getElementById("downloadBtn")
+                .addEventListener("click", function () {
+                    // 저장 전 확인 메시지
+                    const confirmSave = confirm(
+                        "작성한 대본이 초기화되고 CSV로 저장됩니다. 저장하시겠습니까?",
+                    );
+
+                    if (confirmSave) {
+                        // 확인을 눌렀을 때만 실행
+                        const csvHeader = '\uFEFF"썸네일","제목","스크립트"\n';
+                        const csvContent = bestVideos
+                            .map((video) => {
+                                const script =
+                                    localStorage.getItem(
+                                        `script_${video.videoId}`,
+                                    ) || "";
+                                const videoThumbnail = `"${video.videoThumbnail}"`;
+                                const videoTitle = `"${video.videoTitle.replace(/"/g, '""')}"`;
+                                const formattedScript = `"${script.replace(/"/g, '""')}"`;
+
+                                return `${videoThumbnail},${videoTitle},${formattedScript}`;
+                            })
+                            .join("\n");
+
+                        const csvData = csvHeader + csvContent;
+                        const blob = new Blob([csvData], {
+                            type: "text/csv;charset=utf-8;",
+                        });
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.setAttribute("href", url);
+                        link.setAttribute(
+                            "download",
+                            "온라인마케터양성교육_과제제출.csv",
+                        );
+                        document.body.appendChild(link);
+                        link.click();
+
+                        // 작성된 스크립트를 삭제 (localStorage와 텍스트 영역)
+                        bestVideos.forEach((video) => {
+                            // 로컬 스토리지에서 해당 비디오의 스크립트 제거
+                            localStorage.removeItem(`script_${video.videoId}`);
+                        });
+
+                        // 페이지에 표시된 텍스트 영역(스크립트 입력 부분) 초기화
+                        const scriptInput =
+                            document.getElementById("scriptInput");
+                        if (scriptInput) {
+                            scriptInput.value = ""; // 텍스트 영역 초기화
+                            scriptInput.disabled = false; // 필요하다면 다시 입력할 수 있게 활성화
+                        }
+
+                        alert("대본이 저장되었습니다.");
+                    } else {
+                        // 취소를 눌렀을 때는 아무 동작도 하지 않음
+                        alert("저장이 취소되었습니다.");
+                    }
+                });
+        </script>
+    </body>
+</html>

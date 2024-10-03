@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>교육생 정보 입력</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body>
+        <main>
+            <div class="watermark">온라인 마케터 양성교육용</div>
+            <h1>교육생 정보 입력</h1>
+
+            <div class="info-container">
+                <!-- 분반 선택 드롭박스 -->
+                <label for="classSelect">분반:</label>
+                <select id="classSelect">
+                    <option value="1분반">1분반</option>
+                    <option value="2분반">2분반</option>
+                    <option value="3분반">3분반</option>
+                    <option value="4분반">4분반</option>
+                </select>
+
+                <!-- 이름 입력 -->
+                <label for="nameInput">이름:</label>
+                <input type="text" id="nameInput" placeholder="이름 입력" />
+
+                <!-- 확인 버튼 -->
+                <button id="submitBtn">확인</button>
+            </div>
+        </main>
+
+        <!-- Footer section -->
+        <div id="footer"></div>
+        <!-- Footer가 동적으로 로드될 부분 -->
+
+        <script>
+            // Footer를 동적으로 로드하는 함수
+            function loadFooter() {
+                fetch("footer.html")
+                    .then((response) => response.text())
+                    .then((data) => {
+                        document.getElementById("footer").innerHTML = data;
+                    })
+                    .catch((error) =>
+                        console.error("Error loading footer:", error),
+                    );
+            }
+
+            // 페이지 로드 시 Footer를 불러오는 함수 호출
+            window.onload = function () {
+                loadFooter();
+            };
+
+            // CSV에 있는 명단 확인하는 함수 (임시로 로컬 데이터 사용)
+            function validateStudentInfo(selectedClass, enteredName) {
+                // 예시 데이터, CSV에서 불러오는 대신 임시로 로컬에서 처리
+                const students = [
+                    { name: "홍길동", class: "1분반" },
+                    { name: "김철수", class: "2분반" },
+                    { name: "이영희", class: "3분반" },
+                    { name: "박민수", class: "4분반" },
+                ];
+
+                return students.some(
+                    (student) =>
+                        student.name === enteredName &&
+                        student.class === selectedClass,
+                );
+            }
+
+            // 확인 버튼 클릭 이벤트
+            document
+                .getElementById("submitBtn")
+                .addEventListener("click", () => {
+                    const selectedClass =
+                        document.getElementById("classSelect").value;
+                    const enteredName = document
+                        .getElementById("nameInput")
+                        .value.trim();
+
+                    if (validateStudentInfo(selectedClass, enteredName)) {
+                        alert("환영합니다!");
+                        window.location.href = "info.html";
+                    } else {
+                        alert("분반과 이름을 다시 확인하세요.");
+                    }
+                });
+        </script>
+    </body>
+</html>
